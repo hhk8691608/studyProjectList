@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bfxy.paya.mapper.CustomerAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.bfxy.paya.entity.CustomerAccount" >
+    <id column="account_id" property="accountId" jdbcType="VARCHAR" />
+    <result column="account_no" property="accountNo" jdbcType="VARCHAR" />
+    <result column="date_time" property="dateTime" jdbcType="TIMESTAMP" />
+    <result column="current_balance" property="currentBalance" jdbcType="DECIMAL" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    account_id, account_no, date_time, current_balance, version, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_customer_account
+    where account_id = #{accountId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_customer_account
+    where account_id = #{accountId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bfxy.paya.entity.CustomerAccount" >
+    insert into t_customer_account (account_id, account_no, date_time, 
+      current_balance, version, create_time, 
+      update_time)
+    values (#{accountId,jdbcType=VARCHAR}, #{accountNo,jdbcType=VARCHAR}, #{dateTime,jdbcType=TIMESTAMP}, 
+      #{currentBalance,jdbcType=DECIMAL}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bfxy.paya.entity.CustomerAccount" >
+    insert into t_customer_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="accountNo != null" >
+        account_no,
+      </if>
+      <if test="dateTime != null" >
+        date_time,
+      </if>
+      <if test="currentBalance != null" >
+        current_balance,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNo != null" >
+        #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dateTime != null" >
+        #{dateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentBalance != null" >
+        #{currentBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bfxy.paya.entity.CustomerAccount" >
+    update t_customer_account
+    <set >
+      <if test="accountNo != null" >
+        account_no = #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dateTime != null" >
+        date_time = #{dateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentBalance != null" >
+        current_balance = #{currentBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where account_id = #{accountId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bfxy.paya.entity.CustomerAccount" >
+    update t_customer_account
+    set account_no = #{accountNo,jdbcType=VARCHAR},
+      date_time = #{dateTime,jdbcType=TIMESTAMP},
+      current_balance = #{currentBalance,jdbcType=DECIMAL},
+      version = #{version,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where account_id = #{accountId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateBalance">
+    update t_customer_account
+    		set current_balance = #{newBalance,jdbcType=DECIMAL},
+      			version = version + 1,
+      			update_time = #{updateTime,jdbcType=TIMESTAMP}
+    		where account_id = #{accountId,jdbcType=VARCHAR} 
+          		  and
+          		  version =  #{version,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  
+  
+  
+  
+</mapper>

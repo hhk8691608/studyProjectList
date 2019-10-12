@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bfxy.store.mapper.StoreMapper" >
+  <resultMap id="BaseResultMap" type="com.bfxy.store.entity.Store" >
+    <id column="store_id" property="storeId" jdbcType="VARCHAR" />
+    <result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="supplier_id" property="supplierId" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="store_count" property="storeCount" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    store_id, goods_id, supplier_id, goods_name, store_count, version, create_by, create_time, 
+    update_by, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_store
+    where store_id = #{storeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_store
+    where store_id = #{storeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bfxy.store.entity.Store" >
+    insert into t_store (store_id, goods_id, supplier_id, 
+      goods_name, store_count, version, 
+      create_by, create_time, update_by, 
+      update_time)
+    values (#{storeId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, #{supplierId,jdbcType=VARCHAR}, 
+      #{goodsName,jdbcType=VARCHAR}, #{storeCount,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bfxy.store.entity.Store" >
+    insert into t_store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="supplierId != null" >
+        supplier_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="storeCount != null" >
+        store_count,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        #{storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeCount != null" >
+        #{storeCount,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bfxy.store.entity.Store" >
+    update t_store
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        supplier_id = #{supplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeCount != null" >
+        store_count = #{storeCount,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where store_id = #{storeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bfxy.store.entity.Store" >
+    update t_store
+    set goods_id = #{goodsId,jdbcType=VARCHAR},
+      supplier_id = #{supplierId,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      store_count = #{storeCount,jdbcType=INTEGER},
+      version = #{version,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where store_id = #{storeId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectVersion" resultType="int">
+  	select version from t_store ts
+  				   where ts.supplier_id = #{supplierId,jdbcType=VARCHAR}
+  				   		 and 
+  				   		 ts.goods_id = #{goodsId,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="updateStoreCountByVersion">
+    update t_store ts
+    set 
+      store_count = store_count - 1,
+      version = version + 1,
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where  ts.supplier_id = #{supplierId,jdbcType=VARCHAR}
+    	   and
+    	   ts.goods_id = #{goodsId,jdbcType=VARCHAR}
+    	   and
+    	   ts.version = #{version,jdbcType=INTEGER}
+    	   and	
+  		   ts.store_count > 0
+  </update>
+  
+  <select id="selectStoreCount" resultType="int">
+  	select store_count from t_store ts
+  					   where ts.supplier_id = #{supplierId,jdbcType=VARCHAR}
+  					         and
+  					         ts.goods_id = #{goodsId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+  
+  
+</mapper>

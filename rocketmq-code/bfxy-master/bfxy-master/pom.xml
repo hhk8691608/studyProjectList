@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.bfxy</groupId>
+	<artifactId>bfxy-master</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>bfxy-master</name>
+	<description>bfxy-master</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.2.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+        <commons-fileupload.version>1.2.2</commons-fileupload.version>
+        <commons-lang3.version>3.3.1</commons-lang3.version>
+        <commons-io.version>2.4</commons-io.version>
+        <commons-collections.version>3.2.2</commons-collections.version>
+        <fastjson.version>1.1.26</fastjson.version>
+        <mybatis.version>3.4.1</mybatis.version>
+        <mybatis-spring.version>1.3.0</mybatis-spring.version>
+        <druid.version>1.1.10</druid.version>
+        <activiti.version>5.21.0</activiti.version>
+        <cxf.version>3.0.0</cxf.version>
+        <cxf-rt.version>3.1.6</cxf-rt.version>
+        <oracle.version>7</oracle.version>
+        <fasterxml.uuid.version>3.1.4</fasterxml.uuid.version>
+        <github.miemiedev.version>1.2.17</github.miemiedev.version>
+        <common.codec.version>1.10</common.codec.version>
+        <servlet-api.version>3.1.0</servlet-api.version> 
+        <kaptcha.version>2.3.2</kaptcha.version>
+        <org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
+        <poi-ooxml.version>3.9</poi-ooxml.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <pinyin4j.version>2.5.1</pinyin4j.version>		
+        <log4j.version>1.2.17</log4j.version>
+        <dubbo.version>0.2.0</dubbo.version>
+        <hystrix.version>1.5.12</hystrix.version>	
+        <rocketmq.version>4.3.0</rocketmq.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<modules>
+		<module>bfxy-order</module>
+		<module>bfxy-store</module>
+		<module>bfxy-pay-a</module>
+		<module>bfxy-pay-b</module>
+		<module>bfxy-pkg</module>
+	</modules>
+</project>
