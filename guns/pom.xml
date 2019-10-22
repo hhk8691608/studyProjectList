@@ -54,6 +54,9 @@
 
     <dependencyManagement>
         <dependencies>
+
+
+
             <dependency>
                 <groupId>com.stylefeng</groupId>
                 <artifactId>guns-generator</artifactId>

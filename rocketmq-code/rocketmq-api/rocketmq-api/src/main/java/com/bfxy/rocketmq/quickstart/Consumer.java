@@ -61,7 +61,6 @@ public class Consumer {
 		});
 		
 		consumer.start();
-		System.err.println("consumer start...");
-		
+		System.err.println("consum");
 	}
 }

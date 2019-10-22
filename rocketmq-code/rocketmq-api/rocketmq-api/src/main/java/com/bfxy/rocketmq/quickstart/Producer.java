@@ -26,7 +26,7 @@ public class Producer {
 		
 		producer.start();
 		
-		for(int i = 0 ; i <5; i ++) {
+		for(int i = 0 ; i <15; i ++) {
 			//	1.	创建消息
 			Message message = new Message("test_quick_topic",	//	主题
 					"TagA", //	标签

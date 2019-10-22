@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.bfxy.order.service.producer.OrderlyProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ import com.bfxy.order.constants.OrderStatus;
 import com.bfxy.order.entity.Order;
 import com.bfxy.order.mapper.OrderMapper;
 import com.bfxy.order.service.OrderService;
-import com.bfxy.order.service.producer.OrderlyProducer;
 import com.bfxy.order.utils.FastJsonConvertUtil;
 import com.bfxy.store.api.StoreServiceApi;
 

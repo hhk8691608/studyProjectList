@@ -77,5 +77,6 @@
 		<module>bfxy-pay-a</module>
 		<module>bfxy-pay-b</module>
 		<module>bfxy-pkg</module>
+		<module>bfxy-store-api</module>
 	</modules>
 </project>
