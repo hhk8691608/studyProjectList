@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="user-edge-service" />
+        <module name="user-edge-service-client" />
+        <module name="user-thrift-service" />
+        <module name="message-thrift-service-api" />
+        <module name="course-edge-service" />
+        <module name="user-thrift-service-api" />
+        <module name="course-dubbo-service" />
+        <module name="course-dubbo-service-api" />
+        <module name="api-gateway-zuul" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="api-gateway-zuul" target="1.7" />
+      <module name="course-dubbo-service" target="1.7" />
+      <module name="course-dubbo-service-api" target="1.7" />
+      <module name="course-edge-service" target="1.7" />
+      <module name="message-thrift-service-api" target="1.7" />
+      <module name="micro-service" target="1.5" />
+      <module name="user-edge-service" target="1.7" />
+      <module name="user-edge-service-client" target="1.5" />
+      <module name="user-thrift-service" target="1.7" />
+      <module name="user-thrift-service-api" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
