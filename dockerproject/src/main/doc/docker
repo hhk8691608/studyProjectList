@@ -12,8 +12,14 @@ docker pull redis:3.2
 docker run --name redis3.2 -p 6379:6379 -v $PWD/data:/data  -d redis:3.2 redis-server --appendonly yes
 docker exec -it 容器id redis-cli
 
+提示点：
+1.为了方便使用全部都是采用暴露端口方式，走外网ip，不安全，学习使用即可
+2.日志尚未整合
+
+
 未解决问题点：
 1.tomcat和mysql处于同一网桥下，可以互通，但是jdbc链接一直失败。
+2.
 
 
 
