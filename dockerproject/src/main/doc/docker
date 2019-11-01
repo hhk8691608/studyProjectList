@@ -3,3 +3,11 @@ mysql搭建：
 2.docker run --name mysql5.7 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
 
 springboot：
+
+
+
+未解决问题点：
+1.tomcat和mysql处于同一网桥下，可以互通，但是jdbc链接一直失败。
+
+
+
