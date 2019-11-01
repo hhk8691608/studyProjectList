@@ -2,7 +2,6 @@ package com.mark.dockerproject.api;
 
 
 import com.mark.dockerproject.VO.UserVO;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
