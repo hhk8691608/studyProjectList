@@ -1,0 +1,5 @@
+mysql搭建：
+1.docker pull mysql:5.7
+2.docker run --name mysql5.7 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
+
+springboot：
