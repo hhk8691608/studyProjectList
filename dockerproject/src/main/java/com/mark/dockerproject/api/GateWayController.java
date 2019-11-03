@@ -1,6 +1,7 @@
 package com.mark.dockerproject.api;
 
 
+import com.mark.dockerproject.service.technology.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,9 @@ public class GateWayController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private RedisService redisService;
 
     @RequestMapping(value="/getSMSValidateCode", method = RequestMethod.GET)
     public Map<String,Object> getSMSValidateCode(@RequestParam("mobile")String mobile) {
@@ -48,6 +52,26 @@ public class GateWayController {
     }
 
 
+    @RequestMapping(value="/testSetZSort", method = RequestMethod.GET)
+    public Map<String,Object> testSetZSort(@RequestParam("uerId") int userId) {
 
+        Map<String,Object> result = new HashMap<>();
+        redisService.testSetZSort(userId);
+        return result;
+    }
+
+    @RequestMapping(value="/testGetZSort", method = RequestMethod.GET)
+    public Map<String,Object> testGetZSort(@RequestParam("uuid")String uuid) {
+        Map<String,Object> result =  redisService.testGetZSort(uuid);
+        return result;
+    }
+
+
+    @RequestMapping(value="/testZSortBySocre", method = RequestMethod.GET)
+    public Map<String,Object> testZSortBySocre(@RequestParam("start")int start,
+                                               @RequestParam("end")int end) {
+        Map<String,Object> result =  redisService.testZSortBySocre(start,end);
+        return result;
+    }
 
 }

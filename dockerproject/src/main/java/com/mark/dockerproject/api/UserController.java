@@ -2,7 +2,7 @@ package com.mark.dockerproject.api;
 
 
 import com.mark.dockerproject.model.User;
-import com.mark.dockerproject.service.UserService;
+import com.mark.dockerproject.service.business.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

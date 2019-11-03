@@ -1,4 +1,4 @@
-package com.mark.dockerproject.service;
+package com.mark.dockerproject.service.business;
 
 
 import com.mark.dockerproject.dao.UserDao;
@@ -14,6 +14,14 @@ public class UserService {
 
     @Autowired
     private UserDao userDao;
+
+    /**
+     * 根据id查找用户
+     */
+    public User selectUserById(int id) {
+        return userDao.findUserById(id);
+    }
+
 
     /**
      * 根据名字查找用户
