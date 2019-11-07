@@ -136,6 +136,38 @@ public class GateWayController {
     }
 
 
+    @RequestMapping(value="/testLogin", method = RequestMethod.GET)
+    public Map<String,Object> test_login() {
+
+        try {
+            Map<String,Object> result = new HashMap<>();
+            result.put("code",200);
+            String token = redisService.generateToken();
+            result.put("token",token);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequestMapping(value="/testGet", method = RequestMethod.GET)
+    public Map<String,Object> test_get(@RequestParam("token")String token) {
+
+        try {
+            Map<String,Object> result = new HashMap<>();
+            result.put("code",200);
+            String key = redisService.checkToken(token);
+            result.put("token",key);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 
 
 

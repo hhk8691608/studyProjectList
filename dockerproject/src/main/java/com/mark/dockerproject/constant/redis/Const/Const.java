@@ -9,4 +9,6 @@ public class Const {
     //登陆步长
     public final static Integer STATISTICAL_LANGDING_LEN = 1;
 
+    public final static String LOGIN_USER_TOKENS = "LoginUserTokens";
+
 }

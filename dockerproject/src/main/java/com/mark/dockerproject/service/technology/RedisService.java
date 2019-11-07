@@ -145,4 +145,42 @@ public class RedisService {
     }
 
 
+
+
+    /**
+     * 使用Redis重新实现登录cookie，取代目前由关系型数据库实现的登录cookie功能
+     * 1、将使用一个散列来存储登录cookie令牌与与登录用户之间的映射。
+     * 2、需要根据给定的令牌来查找与之对应的用户，并在已经登录的情况下，返回该用户id。
+     */
+    public String checkToken(String key){
+        Object obj = redisTemplate.opsForHash().get(Const.LOGIN_USER_TOKENS,key);
+        return obj==null?null:obj.toString();
+    }
+
+    public String generateToken() throws Exception {
+        String uuid32 = GeneralUtil.getUUID32();
+        if(checkToken(uuid32) != null){
+            throw new Exception("主键冲突...");
+        }
+        redisTemplate.opsForHash().put(Const.LOGIN_USER_TOKENS,uuid32,uuid32);
+        return uuid32;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
