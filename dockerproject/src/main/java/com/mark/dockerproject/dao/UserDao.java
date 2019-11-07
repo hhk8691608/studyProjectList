@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface UserDao {
 
-    @Select("SELECT * FROM user WHERE id = #{id}")
+    @Select("SELECT id,name,age,money,like_num likeNum,count count FROM user WHERE id = #{id}")
     User findUserById(@Param("id") int id);
 
     /**
@@ -43,5 +43,6 @@ public interface UserDao {
     @Delete("DELETE from user WHERE id = #{id}")
     void deleteUser(@Param("id") int id);
 
-
+    @Update("update user set like_num =#{likeNum} WHERE id =#{id}")
+    void updateInfo(User user);
 }

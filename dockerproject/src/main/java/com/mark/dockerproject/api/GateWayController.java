@@ -1,6 +1,9 @@
 package com.mark.dockerproject.api;
 
 
+import com.mark.dockerproject.DTO.LikedCountDTO;
+import com.mark.dockerproject.model.UserLike;
+import com.mark.dockerproject.service.business.LikedService;
 import com.mark.dockerproject.service.technology.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +26,9 @@ public class GateWayController {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private LikedService likedService;
 
     @RequestMapping(value="/getSMSValidateCode", method = RequestMethod.GET)
     public Map<String,Object> getSMSValidateCode(@RequestParam("mobile")String mobile) {
@@ -73,5 +80,65 @@ public class GateWayController {
         Map<String,Object> result =  redisService.testZSortBySocre(start,end);
         return result;
     }
+
+
+
+    //用户点赞
+    @RequestMapping(value="/userLike", method = RequestMethod.GET)
+    public Map<String,Object> userLike(@RequestParam("likedUserId")String likedUserId,
+                                               @RequestParam("likedPostId")String likedPostId) {
+        Map<String,Object> result = new HashMap<>();
+        result.put("code",200);
+        redisService.saveLiked2Redis(likedUserId,likedPostId);
+        redisService.incrementLikedCount(likedUserId);
+        return result;
+    }
+
+//    取消点赞
+    @RequestMapping(value="/userUnLike", method = RequestMethod.GET)
+    public Map<String,Object> userUnLike(@RequestParam("likedUserId")String likedUserId,
+                                       @RequestParam("likedPostId")String likedPostId) {
+        Map<String,Object> result = new HashMap<>();
+        result.put("code",200);
+        redisService.unlikeFromRedis(likedUserId,likedPostId);
+        redisService.decrementLikedCount(likedUserId);
+        return result;
+    }
+
+//    获取Redis中存储的所有点赞数据
+    @RequestMapping(value="/getUserLikeList", method = RequestMethod.GET)
+    public Map<String,Object> getUserLikeList() {
+        Map<String,Object> result = new HashMap<>();
+        result.put("code",200);
+        List<UserLike> list = redisService.getLikedDataFromRedis(0);
+        result.put("list",list);
+        return result;
+    }
+
+    //    获取Redis中存储的点赞用户top
+    @RequestMapping(value="/getUserLikeTOP", method = RequestMethod.GET)
+    public Map<String,Object> getUserLikeTOP() {
+        Map<String,Object> result = new HashMap<>();
+        result.put("code",200);
+        List<LikedCountDTO> list = redisService.getLikedCountFromRedis(0);
+        result.put("list",list);
+        return result;
+    }
+
+
+    //同步数据库
+    @RequestMapping(value="/syncDB", method = RequestMethod.GET)
+    public Map<String,Object> syncDB() {
+        Map<String,Object> result = new HashMap<>();
+        result.put("code",200);
+        likedService.syncDB();
+        return result;
+    }
+
+
+
+
+
+
 
 }
