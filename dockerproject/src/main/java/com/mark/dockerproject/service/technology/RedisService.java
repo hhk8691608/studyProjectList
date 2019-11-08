@@ -166,6 +166,124 @@ public class RedisService {
         return uuid32;
     }
 
+    /**
+     * 1、每次用户浏览页面的时候，程序需都会对用户存储在登录散列里面的信息进行更新，
+     * 2、并将用户的令牌和当前时间戳添加到记录最近登录用户的集合里。
+     * 3、如果用户正在浏览的是一个商品，程序还会将商品添加到记录这个用户最近浏览过的商品有序集合里面，
+     * 4、如果记录商品的数量超过25个时，对这个有序集合进行修剪。
+     */
+    public void updateToken(String token,String user,String item){
+
+        long timestamp = System.currentTimeMillis() / 1000;
+        redisTemplate.opsForHash().put(Const.LOGIN_USER_TOKENS,token,user);
+        redisTemplate.opsForZSet().add(Const.LOGIN_RECENT_USER,token,Const.STATISTICAL_LANGDING_LEN_D);
+        if(item != null){
+            //4、记录用户浏览过的商品
+            redisTemplate.opsForZSet().add(Const.USER_VIEWED+token,item,Const.STATISTICAL_LANGDING_LEN_D);
+            //5、移除旧记录，只保留用户最近浏览过的25个商品
+            redisTemplate.opsForZSet().removeRange(Const.USER_VIEWED+token,0,-4);
+//            redisTemplate.opsForZSet().
+
+        }
+
+    }
+
+
+
+    /**
+     * 使用cookie实现购物车——就是将整个购物车都存储到cookie里面，
+     * 优点：无需对数据库进行写入就可以实现购物车功能，
+     * 缺点：怎是程序需要重新解析和验证cookie，确保cookie的格式正确。并且包含商品可以正常购买
+     * 还有一缺点：因为浏览器每次发送请求都会连cookie一起发送，所以如果购物车的体积较大，
+     * 那么请求发送和处理的速度可能降低。
+     * -----------------------------------------------------------------
+     * 1、每个用户的购物车都是一个散列，存储了商品ID与商品订单数量之间的映射。
+     * 2、如果用户订购某件商品的数量大于0，那么程序会将这件商品的ID以及用户订购该商品的数量添加到散列里。
+     * 3、如果用户购买的商品已经存在于散列里面，那么新的订单数量会覆盖已有的。
+     * 4、相反，如果某用户订购某件商品数量不大于0，那么程序将从散列里移除该条目
+     * 5、需要对之前的会话清理函数进行更新，让它在清理会话的同时，将旧会话对应的用户购物车也一并删除。
+     */
+    public void addToCart(String token, String item, int count) {
+        if (count <= 0) {
+            //1、从购物车里面移除指定的商品
+            redisTemplate.opsForHash().delete(Const.USER_CART + token, item);
+        } else {
+            //2、将指定的商品添加到购物车
+            redisTemplate.opsForHash().put(Const.USER_CART + token, item, String.valueOf(count));
+            Double scoreLen = redisTemplate.opsForZSet().score(Const.USER_VIEWED+token,item);
+            if(scoreLen != null){
+                scoreLen = scoreLen > 0 ? Const.STATISTICAL_LANGDING_LEN_D+scoreLen : Const.STATISTICAL_LANGDING_LEN_D;
+            }else{
+                scoreLen = 1.0;
+            }
+
+            //4、记录用户浏览过的商品
+            redisTemplate.opsForZSet().add(Const.USER_VIEWED+token,item,scoreLen);
+            //5、移除旧记录，只保留用户最近浏览过的25个商品
+            redisTemplate.opsForZSet().removeRange(Const.USER_VIEWED+token,0,-31);
+        }
+
+    }
+
+    //获取具体用户心意产品排行榜TOP
+    public Set<String> userLikeItemTOP(String token,int end){
+        Set<String> stringSet = redisTemplate.opsForZSet().reverseRange(Const.USER_VIEWED+token,0,end);
+        return stringSet;
+    }
+
+    //用户点击浏览商品
+    public void browseTheGoods(String token,String item){
+        Double scoreLen = redisTemplate.opsForZSet().score(Const.USER_VIEWED+token,item);
+        if(scoreLen != null){
+            scoreLen = scoreLen > 0 ? Const.STATISTICAL_LANGDING_LEN_D+scoreLen : Const.STATISTICAL_LANGDING_LEN_D;
+        }else{
+            scoreLen = 1.0;
+        }
+        redisTemplate.opsForZSet().add(Const.USER_VIEWED+token,item,scoreLen);
+    }
+
+    //清除下单后购物车的商品
+    public void removeCart2Order(String token,String item){
+
+        redisTemplate.opsForHash().delete(Const.USER_CART+token,item);
+        browseTheGoods(token,item);
+    }
+
+
+
+
+
+
+    public void test(String token,int end){
+//        redisTemplate.opsForZSet().removeRange(Const.USER_VIEWED+token,0,end);
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

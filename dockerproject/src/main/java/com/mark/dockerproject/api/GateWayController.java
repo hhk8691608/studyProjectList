@@ -2,19 +2,22 @@ package com.mark.dockerproject.api;
 
 
 import com.mark.dockerproject.DTO.LikedCountDTO;
+import com.mark.dockerproject.DTO.OrderDTO;
+import com.mark.dockerproject.dao.ItemDao;
+import com.mark.dockerproject.model.Item;
 import com.mark.dockerproject.model.UserLike;
+import com.mark.dockerproject.service.business.ItemService;
 import com.mark.dockerproject.service.business.LikedService;
+import com.mark.dockerproject.service.business.OrderService;
 import com.mark.dockerproject.service.technology.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -29,6 +32,13 @@ public class GateWayController {
 
     @Autowired
     private LikedService likedService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private ItemService itemService;
+
 
     @RequestMapping(value="/getSMSValidateCode", method = RequestMethod.GET)
     public Map<String,Object> getSMSValidateCode(@RequestParam("mobile")String mobile) {
@@ -166,6 +176,89 @@ public class GateWayController {
         return null;
     }
 
+    @RequestMapping(value="/browseProduct", method = RequestMethod.GET)
+    public Map<String,Object> browseProduct(@RequestParam("token")String token,
+                                              @RequestParam(value = "item")String item) {
+        Map<String,Object> result = new HashMap<>();
+        try {
+            result.put("code",200);
+            redisService.browseTheGoods(token,item);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("code",500);
+            return result;
+        }
+    }
+
+
+
+    @RequestMapping(value="/addCard", method = RequestMethod.GET)
+    public Map<String,Object> addCard(@RequestParam("token")String token,
+                                      @RequestParam("item")String item,
+                                      @RequestParam("count")int count) {
+        try {
+            Map<String,Object> result = new HashMap<>();
+            result.put("code",200);
+            redisService.addToCart(token,item,count);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequestMapping(value="/mindItemTOP", method = RequestMethod.GET)
+    public Map<String,Object> userLikeItemTOP(@RequestParam("token")String token,
+                                      @RequestParam(value = "end",defaultValue = "10")int end) {
+        try {
+            Map<String,Object> result = new HashMap<>();
+            result.put("code",200);
+            Set<String> stringSet = redisService.userLikeItemTOP(token,end);
+            result.put("stringSet",stringSet);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    @RequestMapping(value="/order", method = RequestMethod.POST)
+    public Map<String,Object> cart2Order(@RequestBody OrderDTO orderDTO) {
+        try {
+            Map<String,Object> result = new HashMap<>();
+            result.put("code",200);
+            orderService.saveOrder(orderDTO);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
+
+    @RequestMapping(value="/testAPI", method = RequestMethod.GET)
+    public Map<String,Object> test(@RequestParam("price")String price,
+                                   @RequestParam(value = "id",defaultValue = "1")int id) {
+        try {
+            Map<String,Object> result = new HashMap<>();
+            result.put("code",200);
+            OrderDTO orderDTO = new OrderDTO();
+            orderDTO.setPrice(price);
+            orderService.saveOrder(orderDTO);
+
+            Item item = itemService.getItemById(id);
+            result.put("item",item);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 

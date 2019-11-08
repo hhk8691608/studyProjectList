@@ -43,12 +43,21 @@ public class GeneralUtil {
 //        String uuid = getUUID64();
 ////        System.out.printf("uuid = "+ uuid);
 
-        for(int i=0;i<10;i++){
-            int len = new Random().nextInt(100);
-            System.out.println(len);
-        }
+//        for(int i=0;i<10;i++){
+//            int len = new Random().nextInt(100);
+//            System.out.println(len);
+//        }
 
 
+
+
+    }
+
+
+    public static int ramdom9(){
+        Random random = new Random();
+        int value = random.nextInt(1000000000);
+        return value;
     }
 
 
