@@ -15,5 +15,4 @@ public interface ItemDao {
 
     @Select("SELECT * FROM item WHERE id = #{id}")
     Item findItemById(@Param("id") int id);
-
 }
