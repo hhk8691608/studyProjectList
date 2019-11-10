@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="bfxy-order" />
+        <module name="bfxy-paya" />
+        <module name="bfxy-payb" />
+        <module name="bfxy-pkg" />
+        <module name="bfxy-store" />
+        <module name="bfxy-store-api" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bfxy-master" target="1.8" />
+      <module name="bfxy-order" target="1.8" />
+      <module name="bfxy-paya" target="1.8" />
+      <module name="bfxy-payb" target="1.8" />
+      <module name="bfxy-pkg" target="1.8" />
+      <module name="bfxy-store" target="1.8" />
+      <module name="bfxy-store-api" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

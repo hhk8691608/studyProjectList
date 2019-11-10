@@ -242,17 +242,14 @@ public class GateWayController {
 
 
     @RequestMapping(value="/testAPI", method = RequestMethod.GET)
-    public Map<String,Object> test(@RequestParam("price")String price,
-                                   @RequestParam(value = "id",defaultValue = "1")int id) {
+    public Map<String,Object> test(@RequestParam(value = "orderNo",defaultValue = "M11245132")String orderNo,
+                                   @RequestParam(value = "orderId",defaultValue = "111")String orderId,
+                                   @RequestParam(value = "supplierId",defaultValue = "222")String supplierId) {
         try {
             Map<String,Object> result = new HashMap<>();
             result.put("code",200);
-            OrderDTO orderDTO = new OrderDTO();
-            orderDTO.setPrice(price);
-            orderService.saveOrder(orderDTO);
+            orderService.orderlyProducerSend(orderNo,orderId,supplierId);
 
-            Item item = itemService.getItemById(id);
-            result.put("item",item);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

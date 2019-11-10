@@ -10,6 +10,7 @@ public class OrderDTO implements Serializable {
 
     private String token;
     private String price;
+    private String supplierId;
     private List<ItemDto> itemDtoList;
 
 }
