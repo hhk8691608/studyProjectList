@@ -78,12 +78,19 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
+<<<<<<< HEAD
         <!--Quartz-->
+=======
+        
+>>>>>>> 31a98570ec54597f00f9d8f91dfd13741e7a0c0d
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 31a98570ec54597f00f9d8f91dfd13741e7a0c0d
 
     </dependencies>
 

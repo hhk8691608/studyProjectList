@@ -1,8 +1,5 @@
 package com.mark.dockerproject.model;
-
-
 import lombok.Data;
-
 @Data
 public class Item {
 
