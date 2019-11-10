@@ -9,6 +9,7 @@ import com.mark.dockerproject.model.UserLike;
 import com.mark.dockerproject.service.business.ItemService;
 import com.mark.dockerproject.service.business.LikedService;
 import com.mark.dockerproject.service.business.OrderService;
+import com.mark.dockerproject.service.business.PayService;
 import com.mark.dockerproject.service.technology.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -38,6 +39,10 @@ public class GateWayController {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private PayService payService;
+
 
 
     @RequestMapping(value="/getSMSValidateCode", method = RequestMethod.GET)
@@ -243,12 +248,12 @@ public class GateWayController {
 
     @RequestMapping(value="/testAPI", method = RequestMethod.GET)
     public Map<String,Object> test(@RequestParam(value = "orderNo",defaultValue = "M11245132")String orderNo,
-                                   @RequestParam(value = "orderId",defaultValue = "111")String orderId,
-                                   @RequestParam(value = "supplierId",defaultValue = "222")String supplierId) {
+                                   @RequestParam(value = "orderId",defaultValue = "M12")String orderId,
+                                   @RequestParam(value = "userId",defaultValue = "222")String userId) {
         try {
             Map<String,Object> result = new HashMap<>();
             result.put("code",200);
-            orderService.orderlyProducerSend(orderNo,orderId,supplierId);
+            payService.paySuccess2Order(orderId,userId);
 
             return result;
         } catch (Exception e) {

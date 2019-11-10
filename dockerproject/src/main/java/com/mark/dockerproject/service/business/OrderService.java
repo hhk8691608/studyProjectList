@@ -10,6 +10,7 @@ import com.mark.dockerproject.dao.UserLikeDao;
 import com.mark.dockerproject.model.Item;
 import com.mark.dockerproject.model.Order;
 import com.mark.dockerproject.mq.orderlyMq.OrderlyProducer;
+import com.mark.dockerproject.service.business.mq.CallbackService;
 import com.mark.dockerproject.service.technology.RedisService;
 import com.mark.dockerproject.utils.FastJsonConvertUtil;
 import com.mark.dockerproject.utils.GeneralUtil;
@@ -37,6 +38,8 @@ public class OrderService {
     @Autowired
     private OrderlyProducer orderlyProducer;
 
+
+
     public void saveOrder(OrderDTO orderDTO){
 
         String token = orderDTO.getToken();
@@ -52,7 +55,7 @@ public class OrderService {
 
 
 
-                //TODO 4.扣费问题
+                //TODO 4.扣费问题--分布式事务问题
 
             }
         }
@@ -63,33 +66,23 @@ public class OrderService {
         order.setSupplierId(orderDTO.getSupplierId());
         orderDao.save(orderDTO.getPrice(),orderNo);
 
-        List<Message> messageList = new ArrayList<>();
-        Map<String, Object> param1 = new HashMap<String, Object>();
-        param1.put("orderNo",orderNo);
-        param1.put("orderId", order.getId());
-        param1.put("text", "创建包裹操作---1");
+        //包裹派发
+        orderlyProducerSend(orderNo,order.getId()+"",orderDTO.getSupplierId());
 
-        String key1 = UUID.randomUUID().toString() + "$" +System.currentTimeMillis();
-        Message message1 = new Message(MQConst.PKG_TOPIC, MQConst.PKG_TAGS, key1, FastJsonConvertUtil.convertObjectToJSON(param1).getBytes());
-
-        Map<String, Object> param2 = new HashMap<String, Object>();
-        param2.put("orderNo",orderNo);
-        param2.put("orderId", order.getId());
-        param2.put("text", "发送物流通知操作---2");
-
-        String key2 = UUID.randomUUID().toString() + "$" +System.currentTimeMillis();
-        Message message2 = new Message(MQConst.PKG_TOPIC, MQConst.PKG_TAGS,key2, FastJsonConvertUtil.convertObjectToJSON(param2).getBytes());
-
-        messageList.add(message2);
-
-
-        //顺序消费订单
-        int messageQueueNumber = Integer.parseInt( orderDTO.getSupplierId() );
-        orderlyProducer.sendOrderlyMessages(messageList,messageQueueNumber);
+        //TODO 扣费--分布式事务
+        int status = 1;
+        //支付成功回调通知订单方
+        if(status == 1){
+//           paySuccess2Order(orderId,userId);
+        }
 
     }
 
-    public void orderlyProducerSend(String orderNo,String orderId,String supplierId){
+
+
+
+    //物流---包裹派发
+    private void orderlyProducerSend(String orderNo,String orderId,String supplierId){
         List<Message> messageList = new ArrayList<>();
         Map<String, Object> param1 = new HashMap<String, Object>();
         param1.put("orderNo",orderNo);
