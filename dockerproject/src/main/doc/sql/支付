@@ -1,0 +1,12 @@
+#账号
+CREATE TABLE `customer_account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` varchar(255) DEFAULT NULL,
+  `current_balance` double(255,2) DEFAULT NULL,
+  `date_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `account_no` varchar(255) DEFAULT NULL,
+  `version` int(11) DEFAULT NULL,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;

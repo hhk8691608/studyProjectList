@@ -11,6 +11,7 @@ import com.mark.dockerproject.service.business.LikedService;
 import com.mark.dockerproject.service.business.OrderService;
 import com.mark.dockerproject.service.business.PayService;
 import com.mark.dockerproject.service.technology.RedisService;
+import com.mark.dockerproject.utils.DESUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -243,23 +244,54 @@ public class GateWayController {
     }
 
 
-
-
-
-    @RequestMapping(value="/testAPI", method = RequestMethod.GET)
-    public Map<String,Object> test(@RequestParam(value = "orderNo",defaultValue = "M11245132")String orderNo,
-                                   @RequestParam(value = "orderId",defaultValue = "M12")String orderId,
-                                   @RequestParam(value = "userId",defaultValue = "222")String userId) {
+    @RequestMapping(value="/pay", method = RequestMethod.GET)
+    public Map<String,Object> order2pay(@RequestParam(value = "accountId",defaultValue = "M11245132")String accountId,
+                                        @RequestParam(value = "orderId",defaultValue = "M12")String orderId,
+                                        @RequestParam(value = "userId",defaultValue = "222")String userId,
+                                        @RequestParam(value = "money",defaultValue = "222")double money) {
         try {
             Map<String,Object> result = new HashMap<>();
             result.put("code",200);
-            payService.paySuccess2Order(orderId,userId);
-
+            String codeStr = payService.payment(userId,orderId,accountId,money);
+            result.put("msg",codeStr);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+
+
+
+    @RequestMapping(value="/testAPI", method = RequestMethod.GET)
+    public Map<String,Object> test(@RequestParam(value = "accountId",defaultValue = "M11245132")String accountId,
+                                   @RequestParam(value = "orderId",defaultValue = "M12")String orderId,
+                                   @RequestParam(value = "userId",defaultValue = "222")String userId,
+                                   @RequestParam(value = "money",defaultValue = "222")double money,
+                                   @RequestParam(value = "currentVersion",defaultValue = "11")int currentVersion) {
+        try {
+            Map<String,Object> result = new HashMap<>();
+            result.put("code",200);
+//            payService.paySuccess2Order(orderId,userId);
+//            String userId, String orderId, String accountId, double money
+//            payService.payment(userId,orderId,accountId,money);
+            payService.testAPI(accountId,currentVersion);
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public static void main(String[] args) {
+
+
+
+
     }
 
 

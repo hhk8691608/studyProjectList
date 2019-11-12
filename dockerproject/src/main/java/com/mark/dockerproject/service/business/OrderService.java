@@ -38,6 +38,9 @@ public class OrderService {
     @Autowired
     private OrderlyProducer orderlyProducer;
 
+    @Autowired
+    private PayService payService;
+
 
 
     public void saveOrder(OrderDTO orderDTO){
@@ -66,16 +69,19 @@ public class OrderService {
         order.setSupplierId(orderDTO.getSupplierId());
         orderDao.save(orderDTO.getPrice(),orderNo);
 
-        //包裹派发
-        orderlyProducerSend(orderNo,order.getId()+"",orderDTO.getSupplierId());
 
         //TODO 扣费--分布式事务
         int status = 1;
-        //支付成功回调通知订单方
-        if(status == 1){
-//           paySuccess2Order(orderId,userId);
-        }
 
+
+        //包裹派发
+        orderlyProducerSend(orderNo,order.getId()+"",orderDTO.getSupplierId());
+
+
+    }
+
+    private void payment(String userId, String orderId, String accountId, double money){
+        payService.payment(userId,orderId,accountId,money);
     }
 
 

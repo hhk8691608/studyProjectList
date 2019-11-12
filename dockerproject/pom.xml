@@ -17,6 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <docker.image.prefix>huhongke</docker.image.prefix>
+        <rocketmq.version>4.3.0</rocketmq.version>
     </properties>
 
     <dependencies>
@@ -83,6 +84,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+
+        <!--rocketmq-->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>${rocketmq.version}</version>
         </dependency>
 
 

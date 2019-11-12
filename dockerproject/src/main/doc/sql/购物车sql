@@ -1,0 +1,16 @@
+#订单表
+CREATE TABLE `order` (
+  `id` int(50) NOT NULL AUTO_INCREMENT,
+  `price` varchar(255) DEFAULT NULL,
+  `orderNo` int(11) DEFAULT NULL
+  PRIMARY KEY (`id`),
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+#商品表
+CREATE TABLE `item` (
+  `id` int(50) NOT NULL AUTO_INCREMENT,
+  `price` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+	`introduce` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
