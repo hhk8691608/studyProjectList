@@ -12,6 +12,9 @@ import com.mark.dockerproject.service.business.OrderService;
 import com.mark.dockerproject.service.business.PayService;
 import com.mark.dockerproject.service.technology.RedisService;
 import com.mark.dockerproject.utils.DESUtils;
+import com.mark.dockerproject.zk.api.DistributedLockByCurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +28,12 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/gateWay")
 public class GateWayController {
+
+
+    private static final Logger LOG = LoggerFactory.getLogger(GateWayController.class);
+
+    @Autowired
+    private DistributedLockByCurator distributedLockByZookeeper;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -285,6 +294,40 @@ public class GateWayController {
         }
         return null;
     }
+
+
+    private final static String PATH = "test";
+
+    @RequestMapping(value="/lock1", method = RequestMethod.GET)
+    public Boolean getLock1() {
+        Boolean flag;
+        distributedLockByZookeeper.acquireDistributedLock(PATH);
+        try {
+            LOG.info("I am lock1，i am updating resource……！！！");
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            flag = distributedLockByZookeeper.releaseDistributedLock(PATH);
+        }
+        return flag;
+    }
+
+    @RequestMapping(value="/lock2", method = RequestMethod.GET)
+    public Boolean getLock2() {
+        Boolean flag;
+        distributedLockByZookeeper.acquireDistributedLock(PATH);
+        try {
+            LOG.info("I am lock2，i am updating resource……！！！");
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            flag = distributedLockByZookeeper.releaseDistributedLock(PATH);
+        }
+        return flag;
+    }
+
 
 
     public static void main(String[] args) {
