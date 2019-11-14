@@ -1,6 +1,7 @@
 package com.stylefeng.guns.rest.modular.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.stylefeng.guns.api.redis.RedisServiceAPI;
 import com.stylefeng.guns.api.user.UserAPI;
 import com.stylefeng.guns.api.user.vo.UserInfoModel;
 import com.stylefeng.guns.api.user.vo.UserModel;
@@ -16,6 +17,10 @@ public class UserController {
 
     @Reference(interfaceClass = UserAPI.class,check = false)
     private UserAPI userAPI;
+
+    @Reference(interfaceClass = RedisServiceAPI.class,check = false)
+    private RedisServiceAPI redisServiceAPI;
+
 
 
     @RequestMapping(value="register",method = RequestMethod.POST)
@@ -110,5 +115,22 @@ public class UserController {
             return ResponseVO.serviceFail("用户未登陆");
         }
     }
+
+
+
+    @RequestMapping(value="getSMSToken",method = RequestMethod.GET)
+    public ResponseVO getSMSToken(String mobile){
+        String token = redisServiceAPI.getSmsToken(mobile);
+        return ResponseVO.success(token);
+    }
+
+
+    @RequestMapping(value="checkSMSToken",method = RequestMethod.GET)
+    public ResponseVO checkSMSToken(String mobile,String token){
+        int tokenCode = redisServiceAPI.checkSmsTokenLife(mobile,token);
+        return ResponseVO.success(tokenCode);
+    }
+
+
 
 }

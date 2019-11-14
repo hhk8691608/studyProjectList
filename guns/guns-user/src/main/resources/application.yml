@@ -40,9 +40,22 @@ spring:
       username: root
       password:
       filters: log4j,wall,mergeStat
+#  redis
+  redis:
+    host: 
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
 
 logging:
   level.root: info
   level.com.stylefeng: debug
   path: logs/
   file: guns-rest.log
+
+
+
