@@ -1,15 +1,20 @@
 package com.stylefeng.guns.rest.modular.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.stylefeng.guns.api.order.mq.constant.MqConst;
+import com.stylefeng.guns.api.order.mq.producer.TestProducerServiceAPI;
 import com.stylefeng.guns.api.redis.RedisServiceAPI;
 import com.stylefeng.guns.api.user.UserAPI;
 import com.stylefeng.guns.api.user.vo.UserInfoModel;
 import com.stylefeng.guns.api.user.vo.UserModel;
 import com.stylefeng.guns.rest.common.CurrentUser;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RequestMapping("/user/")
 @RestController
@@ -20,6 +25,9 @@ public class UserController {
 
     @Reference(interfaceClass = RedisServiceAPI.class,check = false)
     private RedisServiceAPI redisServiceAPI;
+
+    @Reference(interfaceClass = TestProducerServiceAPI.class,check = false)
+    private TestProducerServiceAPI testProducerServiceAPI;
 
 
 
@@ -130,6 +138,16 @@ public class UserController {
         int tokenCode = redisServiceAPI.checkSmsTokenLife(mobile,token);
         return ResponseVO.success(tokenCode);
     }
+
+
+    @RequestMapping(value="testMQ",method = RequestMethod.GET)
+    public ResponseVO testMQ(String mobile){
+        String key = UUID.randomUUID().toString() + "$" +System.currentTimeMillis();
+        Message msg = new Message(MqConst.TEXT_MQ_TOPIC,MqConst.TEXT_MQ_TAGS, key,("测试RocketMQ" ).getBytes());
+        testProducerServiceAPI.sendTestMessage(msg);
+        return ResponseVO.success("200");
+    }
+
 
 
 

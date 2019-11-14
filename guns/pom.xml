@@ -50,6 +50,7 @@
         <jwt.version>0.9.0</jwt.version>
         <hutool.version>4.1.1</hutool.version>
         <lombok.version>1.18.0</lombok.version>
+        <rocketmq.version>4.3.0</rocketmq.version>
     </properties>
 
     <dependencyManagement>
