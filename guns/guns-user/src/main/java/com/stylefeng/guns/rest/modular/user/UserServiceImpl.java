@@ -2,14 +2,19 @@ package com.stylefeng.guns.rest.modular.user;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.stylefeng.guns.api.redis.vo.UserLeaderboardDO;
 import com.stylefeng.guns.api.user.UserAPI;
 import com.stylefeng.guns.api.user.vo.UserInfoModel;
+import com.stylefeng.guns.api.user.vo.UserLeaderboardModel;
 import com.stylefeng.guns.api.user.vo.UserModel;
 import com.stylefeng.guns.core.util.MD5Util;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocUserTMapper;
 import com.stylefeng.guns.rest.common.persistence.model.MoocUserT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Component
@@ -130,6 +135,32 @@ public class UserServiceImpl implements UserAPI{
         }else{
             return null;
         }
+    }
+
+
+    @Override
+    public List<UserLeaderboardModel> getUserInfoTop(List<UserLeaderboardDO> reqBody) {
+
+        List<UserLeaderboardModel> result = new ArrayList<>();
+        for(UserLeaderboardDO userLeaderboardDO : reqBody){
+            UserLeaderboardModel userLeaderboardModel = new UserLeaderboardModel(userLeaderboardDO);
+            String mobile = userLeaderboardModel.getMobile();
+            MoocUserT dbMoocUserT = getUserByMobile(mobile);
+            userLeaderboardModel.setId(Long.parseLong(dbMoocUserT.getUuid()+""));
+            userLeaderboardModel.setUserName(dbMoocUserT.getUserName());
+            result.add(userLeaderboardModel);
+        }
+
+        return result;
+    }
+
+
+
+    private MoocUserT getUserByMobile(String mobile){
+        MoocUserT moocUserT = new MoocUserT();
+        moocUserT.setUserPhone(mobile);
+
+        return moocUserTMapper.selectOne(moocUserT);
     }
 
 

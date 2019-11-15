@@ -4,8 +4,10 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.stylefeng.guns.api.order.mq.constant.MqConst;
 import com.stylefeng.guns.api.order.mq.producer.TestProducerServiceAPI;
 import com.stylefeng.guns.api.redis.RedisServiceAPI;
+import com.stylefeng.guns.api.redis.vo.UserLeaderboardDO;
 import com.stylefeng.guns.api.user.UserAPI;
 import com.stylefeng.guns.api.user.vo.UserInfoModel;
+import com.stylefeng.guns.api.user.vo.UserLeaderboardModel;
 import com.stylefeng.guns.api.user.vo.UserModel;
 import com.stylefeng.guns.rest.common.CurrentUser;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/user/")
@@ -148,7 +151,12 @@ public class UserController {
         return ResponseVO.success("200");
     }
 
-
+    @RequestMapping(value="getUserAccessTOP",method = RequestMethod.GET)
+    public ResponseVO getUserAccessTOP(){
+        List<UserLeaderboardDO> reusltList = redisServiceAPI.getTop();
+        List<UserLeaderboardModel> userLeaderboardModelList = userAPI.getUserInfoTop(reusltList);
+        return ResponseVO.success(userLeaderboardModelList);
+    }
 
 
 }

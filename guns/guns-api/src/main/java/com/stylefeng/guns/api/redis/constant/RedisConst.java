@@ -20,4 +20,10 @@ public class RedisConst implements Serializable {
     //短信验证码存活
     public final static int SMS_TOKEM_CORRECT= 4;
 
+
+    //用户访问排行榜
+    public final static String USER_ACCESS_WEB_TOP = "userAccessWebTop";
+    //用户访问排行榜Score的步长
+    public final static double USER_ACCESS_WEB_TOP_LEN = 1.0;
+
 }

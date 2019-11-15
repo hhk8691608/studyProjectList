@@ -5,6 +5,7 @@ import com.alibaba.dubbo.rpc.RpcContext;
 import com.stylefeng.guns.api.film.FilmAsyncServiceApi;
 import com.stylefeng.guns.api.film.FilmServiceApi;
 import com.stylefeng.guns.api.film.vo.*;
+import com.stylefeng.guns.api.redis.RedisServiceAPI;
 import com.stylefeng.guns.rest.modular.film.vo.FilmConditionVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmIndexVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmRequestVO;
@@ -28,6 +29,9 @@ public class FilmController {
     @Reference(interfaceClass = FilmAsyncServiceApi.class,async = true,check = false)
     private FilmAsyncServiceApi filmAsyncServiceApi;
 
+    @Reference(interfaceClass = RedisServiceAPI.class,check = false)
+    private RedisServiceAPI redisServiceAPI;
+
     // 获取首页信息接口
     /*
         API网关：
@@ -39,7 +43,7 @@ public class FilmController {
                 1、一次获取数据过多，容易出现问题
      */
     @RequestMapping(value = "getIndex",method = RequestMethod.GET)
-    public ResponseVO<FilmIndexVO> getIndex(){
+    public ResponseVO<FilmIndexVO> getIndex(@RequestParam(name = "mobile",defaultValue = "13885208531",required = false)String mobile){
         // 测试Lombok
 //        BannerVO bannerVO = new BannerVO();
 //        bannerVO.setBannerAddress("");
@@ -56,7 +60,7 @@ public class FilmController {
         filmIndexVO.setExpectRanking(filmServiceApi.getExpectRanking());
         // 获取前一百
         filmIndexVO.setTop100(filmServiceApi.getTop());
-
+        redisServiceAPI.addUserAccess(mobile);
         return ResponseVO.success(filmIndexVO);
     }
 

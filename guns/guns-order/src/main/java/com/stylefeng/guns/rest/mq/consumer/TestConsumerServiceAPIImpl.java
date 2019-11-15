@@ -46,17 +46,13 @@ public class TestConsumerServiceAPIImpl implements TestConsumerServiceAPI {
                         System.out.println("  MessageBody: "+ msgBody);//输出消息内容
                 }
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
                 return ConsumeConcurrentlyStatus.RECONSUME_LATER;
             }
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS; //消费成功
         }
     }
 
-    @Override
-    public void consumerTestMsg() {
-
-    }
 
 
 }
