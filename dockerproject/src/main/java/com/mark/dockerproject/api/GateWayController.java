@@ -6,6 +6,8 @@ import com.mark.dockerproject.DTO.OrderDTO;
 import com.mark.dockerproject.dao.ItemDao;
 import com.mark.dockerproject.model.Item;
 import com.mark.dockerproject.model.UserLike;
+import com.mark.dockerproject.mq.kafka.KafkaContants;
+import com.mark.dockerproject.mq.kafka.KafkaSender;
 import com.mark.dockerproject.service.business.ItemService;
 import com.mark.dockerproject.service.business.LikedService;
 import com.mark.dockerproject.service.business.OrderService;
@@ -52,6 +54,9 @@ public class GateWayController {
 
     @Autowired
     private PayService payService;
+
+    @Autowired
+    private KafkaSender kafkaSender;
 
 
 
@@ -328,6 +333,16 @@ public class GateWayController {
         return flag;
     }
 
+
+
+
+    @RequestMapping(value="/sendMessageByKafka", method = RequestMethod.GET)
+    public Map<String,Object> sendMessageByKafka(@RequestParam(value = "messageStr",defaultValue = "hello,kafka")String messageStr) {
+        Map<String,Object> result = new HashMap<>();
+        result.put("code",200);
+        kafkaSender.sendMessage(KafkaContants.TRADE_TOPIC,messageStr);
+        return  result;
+    }
 
 
     public static void main(String[] args) {

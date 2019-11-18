@@ -15,7 +15,7 @@ public class KafkaReceiver {
         Optional<?> kafkaMessage = Optional.ofNullable(record.value());
         if (kafkaMessage.isPresent()) {
             Object message = kafkaMessage.get();
-            System.out.println(message);
+            System.out.println("consumer get message is  "+ message);
         }
     }
 
